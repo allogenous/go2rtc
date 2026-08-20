@@ -20,12 +20,15 @@ type Session struct {
 	seq      int
 	alive    *time.Timer
 	mu       sync.Mutex
+	// extraQuery 附加到 HLS 分片 URL（如 &token=...）
+	extraQuery string
 }
 
-func NewSession(cons core.Consumer) *Session {
+func NewSession(cons core.Consumer, extraQuery string) *Session {
 	s := &Session{
-		id:   core.RandString(8, 62),
-		cons: cons,
+		id:         core.RandString(8, 62),
+		cons:       cons,
+		extraQuery: extraQuery,
 	}
 
 	// two segments important for Chromecast
@@ -79,11 +82,15 @@ func (s *Session) Main() []byte {
 	// bandwidth important for Safari, codecs useful for smooth playback
 	return []byte(`#EXTM3U
 #EXT-X-STREAM-INF:BANDWIDTH=192000,CODECS="` + codecs + `"
-hls/playlist.m3u8?id=` + s.id)
+hls/playlist.m3u8?id=` + s.id + s.extraQuery)
 }
 
 func (s *Session) Playlist() []byte {
-	return []byte(fmt.Sprintf(s.template, s.seq, s.seq, s.seq+1))
+	body := fmt.Sprintf(s.template, s.seq, s.seq, s.seq+1)
+	if s.extraQuery != "" {
+		body = strings.ReplaceAll(body, "?id="+s.id, "?id="+s.id+s.extraQuery)
+	}
+	return []byte(body)
 }
 
 func (s *Session) Init() (init []byte) {

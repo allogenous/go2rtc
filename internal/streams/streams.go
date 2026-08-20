@@ -149,10 +149,11 @@ func Get(name string) *Stream {
 	return streams[name]
 }
 
+// Delete 移除命名流（无消费者时释放网关并发计数用）。
 func Delete(name string) {
 	streamsMu.Lock()
-	defer streamsMu.Unlock()
 	delete(streams, name)
+	streamsMu.Unlock()
 }
 
 func GetAllNames() []string {

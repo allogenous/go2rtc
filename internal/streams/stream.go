@@ -61,6 +61,13 @@ func (s *Stream) SetSource(source string) {
 	}
 }
 
+func (s *Stream) ConsumerCount() int {
+	s.mu.Lock()
+	n := len(s.consumers)
+	s.mu.Unlock()
+	return n
+}
+
 func (s *Stream) RemoveConsumer(cons core.Consumer) {
 	_ = cons.Stop()
 

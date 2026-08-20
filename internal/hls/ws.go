@@ -29,7 +29,7 @@ func handlerWSHLS(tr *ws.Transport, msg *ws.Message) error {
 		return err
 	}
 
-	session := NewSession(cons)
+	session := NewSession(cons, extraQueryFromRequest(tr.Request))
 
 	session.alive = time.AfterFunc(keepalive, func() {
 		sessionsMu.Lock()

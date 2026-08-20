@@ -43,7 +43,8 @@ func Init() {
 	// load config from YAML
 	app.LoadConfig(&cfg)
 
-	if cfg.Mod.Listen == "" && cfg.Mod.UnixListen == "" && cfg.Mod.TLSListen == "" {
+	embedded := embedMux != nil
+	if !embedded && cfg.Mod.Listen == "" && cfg.Mod.UnixListen == "" && cfg.Mod.TLSListen == "" {
 		return
 	}
 
@@ -51,13 +52,20 @@ func Init() {
 	basePath = cfg.Mod.BasePath
 	log = app.GetLogger("api")
 
-	initStatic(cfg.Mod.StaticDir)
+	if !embedded {
+		initStatic(cfg.Mod.StaticDir)
 
-	HandleFunc("api", apiHandler)
-	HandleFunc("api/config", configHandler)
-	HandleFunc("api/exit", exitHandler)
-	HandleFunc("api/restart", restartHandler)
-	HandleFunc("api/log", logHandler)
+		HandleFunc("api", apiHandler)
+		HandleFunc("api/config", configHandler)
+		HandleFunc("api/exit", exitHandler)
+		HandleFunc("api/restart", restartHandler)
+		HandleFunc("api/log", logHandler)
+	}
+
+	if embedded {
+		Handler = embedMux
+		return
+	}
 
 	Handler = http.DefaultServeMux // 4th
 
@@ -73,19 +81,19 @@ func Init() {
 		Handler = middlewareLog(Handler) // 1st
 	}
 
-	if cfg.Mod.Listen != "" {
+	if !embedded && cfg.Mod.Listen != "" {
 		_, port, _ := net.SplitHostPort(cfg.Mod.Listen)
 		Port, _ = strconv.Atoi(port)
 		go listen("tcp", cfg.Mod.Listen)
 	}
 
-	if cfg.Mod.UnixListen != "" {
+	if !embedded && cfg.Mod.UnixListen != "" {
 		_ = syscall.Unlink(cfg.Mod.UnixListen)
 		go listen("unix", cfg.Mod.UnixListen)
 	}
 
 	// Initialize the HTTPS server
-	if cfg.Mod.TLSListen != "" && cfg.Mod.TLSCert != "" && cfg.Mod.TLSKey != "" {
+	if !embedded && cfg.Mod.TLSListen != "" && cfg.Mod.TLSCert != "" && cfg.Mod.TLSKey != "" {
 		go tlsListen("tcp", cfg.Mod.TLSListen, cfg.Mod.TLSCert, cfg.Mod.TLSKey)
 	}
 }
@@ -162,7 +170,11 @@ func HandleFunc(pattern string, handler http.HandlerFunc) {
 		return
 	}
 	log.Trace().Str("path", pattern).Msg("[api] register path")
-	http.HandleFunc(pattern, handler)
+	if embedMux != nil {
+		embedMux.HandleFunc(pattern, handler)
+	} else {
+		http.HandleFunc(pattern, handler)
+	}
 }
 
 // ResponseJSON important always add Content-Type
@@ -196,7 +208,13 @@ const StreamNotFound = "stream not found"
 
 var allowPaths []string
 var basePath string
+var embedMux *http.ServeMux
 var log zerolog.Logger
+
+// SetEmbedMux 嵌入宿主进程时注入 ServeMux；须在 Init 之前调用。
+func SetEmbedMux(mux *http.ServeMux) {
+	embedMux = mux
+}
 
 func middlewareLog(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

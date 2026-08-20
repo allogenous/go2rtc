@@ -2,6 +2,7 @@ package hls
 
 import (
 	"net/http"
+	"net/url"
 	"sync"
 	"time"
 
@@ -31,9 +32,17 @@ func Init() {
 	ws.HandleFunc("hls", handlerWSHLS)
 }
 
+func extraQueryFromRequest(r *http.Request) string {
+	token := r.URL.Query().Get("token")
+	if token == "" {
+		return ""
+	}
+	return "&token=" + url.QueryEscape(token)
+}
+
 var log zerolog.Logger
 
-const keepalive = 5 * time.Second
+const keepalive = 30 * time.Second
 
 // once I saw 404 on MP4 segment, so better to use mutex
 var sessions = map[string]*Session{}
@@ -77,7 +86,7 @@ func handlerStream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session := NewSession(cons)
+	session := NewSession(cons, extraQueryFromRequest(r))
 	session.alive = time.AfterFunc(keepalive, func() {
 		sessionsMu.Lock()
 		delete(sessions, session.id)
@@ -114,6 +123,8 @@ func handlerPlaylist(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
+
+	session.alive.Reset(keepalive)
 
 	if _, err := w.Write(session.Playlist()); err != nil {
 		log.Error().Err(err).Caller().Send()
@@ -169,6 +180,8 @@ func handlerInit(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
+
+	session.alive.Reset(keepalive)
 
 	data := session.Init()
 	if data == nil {

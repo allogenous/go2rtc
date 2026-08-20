@@ -2,8 +2,10 @@ package app
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 
@@ -52,6 +54,44 @@ func (c *flagConfig) Set(value string) error {
 }
 
 var configs [][]byte
+
+// AppendConfigYAML 追加嵌入式 YAML 配置（在 Init / InitEmbedded 加载模块前调用）。
+func AppendConfigYAML(data []byte) {
+	if len(data) == 0 {
+		return
+	}
+	configs = append(configs, data)
+}
+
+// InitEmbedded 供宿主进程库嵌入初始化：不解析命令行 flag，不监听独立 HTTP 端口。
+func InitEmbedded() {
+	if Version == "" {
+		Version = "1.9.14"
+	}
+
+	revision, vcsTime := readRevisionTime()
+
+	UserAgent = "go2rtc/" + Version
+
+	Info["version"] = Version
+	Info["revision"] = revision
+
+	initLogger()
+
+	platform := fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH)
+	Logger.Info().Str("version", Version).Str("platform", platform).Str("revision", revision).Msg("go2rtc embedded")
+	Logger.Debug().Str("version", runtime.Version()).Str("vcs.time", vcsTime).Msg("build")
+
+	var cfg struct {
+		Mod struct {
+			Modules []string `yaml:"modules"`
+		} `yaml:"app"`
+	}
+
+	LoadConfig(&cfg)
+
+	Modules = cfg.Mod.Modules
+}
 
 func initConfig(confs flagConfig) {
 	if confs == nil {
