@@ -1,3 +1,5 @@
+//go:build ignore
+
 package tlv8
 
 import (

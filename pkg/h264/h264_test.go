@@ -1,3 +1,5 @@
+//go:build ignore
+
 package h264
 
 import (
