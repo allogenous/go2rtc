@@ -76,10 +76,12 @@ rtmp:
 ffmpeg:
   bin: %q
 log:
-  level: info
+  level: warn
+  output: ""
   api: error
-  streams: info
-  hls: info
+  streams: warn
+  hls: warn
+  rtsp: warn
   ffmpeg: error
   exec: error
 `, prefix, allow[0], allow[1], allow[2], allow[3], allow[4], allow[5], rtspListen, ffmpegBin)
