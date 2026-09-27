@@ -7,10 +7,10 @@ import (
 	"sync"
 )
 
-// WriteBuffer by defaul Write(s) to bytes.Buffer.
-// But after WriteTo to new io.Writer - calls Reset.
+// WriteBuffer by defaul Write(s) to bytes.Buffer
+// But after WriteTo to new io.Writer - calls Reset
 // Reset will flush current buffer data to new writer and starts to Write to new io.Writer
-// WriteTo will be locked until Write fails or Close will be called.
+// WriteTo will be locked until Write fails or Close will be called
 type WriteBuffer struct {
 	io.Writer
 	err   error

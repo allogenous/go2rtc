@@ -29,7 +29,7 @@ func RTPDepay(codec *core.Codec, handler core.HandlerFunc) core.HandlerFunc {
 			return
 		}
 
-		// Memory overflow protection. Can happen if we miss a lot of packets with the marker.
+		// Memory overflow protection. Can happen if we miss a lot of packets with the marker
 		// https://github.com/AlexxIT/go2rtc/issues/675
 		if len(buf) > 5*1024*1024 {
 			buf = buf[: 0 : 512*1024]
@@ -51,7 +51,7 @@ func RTPDepay(codec *core.Codec, handler core.HandlerFunc) core.HandlerFunc {
 
 		if len(buf) == 0 {
 			for {
-				// Amcrest IP4M-1051: 9, 7, 8, 6, 28...
+				// Amcrest IP4M-1051: 9, 7, 8, 6, 28
 				// Amcrest IP4M-1051: 9, 6, 1
 				switch NALUType(payload) {
 				case NALUTypeIFrame:

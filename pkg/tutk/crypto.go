@@ -5,7 +5,7 @@ import (
 	"math/bits"
 )
 
-// I'd like to say hello to Charlie. Your name is forever etched into the history of streaming software.
+// I'd like to say hello to Charlie. Your name is forever etched into the history of streaming software
 const charlie = "Charlie is the designer of P2P!!"
 
 func ReverseTransCodePartial(dst, src []byte) []byte {

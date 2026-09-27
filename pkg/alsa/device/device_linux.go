@@ -29,7 +29,7 @@ func Open(path string) (*Device, error) {
 	d := &Device{fd: uintptr(fd), path: path}
 	d.init()
 
-	// load all supported formats, channels, rates, etc.
+	// load all supported formats, channels, rates, etc
 	if err = ioctl(d.fd, SNDRV_PCM_IOCTL_HW_REFINE, &d.hwparams); err != nil {
 		_ = d.Close()
 		return nil, err

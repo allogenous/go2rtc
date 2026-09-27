@@ -19,14 +19,14 @@ func ADTSHeaderLen(b []byte) int {
 
 func IsADTS(b []byte) bool {
 	// AAAAAAAA AAAABCCD EEFFFFGH HHIJKLMM MMMMMMMM MMMOOOOO OOOOOOPP (QQQQQQQQ QQQQQQQQ)
-	// A	12	Syncword, all bits must be set to 1.
-	// C	2	Layer, always set to 0.
+	// A	12	Syncword, all bits must be set to 1
+	// C	2	Layer, always set to 0
 	return len(b) >= ADTSHeaderSize && b[0] == 0xFF && b[1]&0b1111_0110 == 0xF0
 }
 
 func HasCRC(b []byte) bool {
 	// AAAAAAAA AAAABCCD EEFFFFGH HHIJKLMM MMMMMMMM MMMOOOOO OOOOOOPP (QQQQQQQQ QQQQQQQQ)
-	// D	1	Protection absence, set to 1 if there is no CRC and 0 if there is CRC.
+	// D	1	Protection absence, set to 1 if there is no CRC and 0 if there is CRC
 	return b[1]&0b1 == 0
 }
 

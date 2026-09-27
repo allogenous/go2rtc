@@ -12,8 +12,8 @@ import (
 func Dial(host, uid, username, password string) (*Conn, error) {
 	addr, err := net.ResolveUDPAddr("udp", host)
 	if err != nil {
-		// Default port for listening incoming LAN connections.
-		// Important. It's not using for real connection.
+		// Default port for listening incoming LAN connections
+		// Important. It's not using for real connection
 		addr = &net.UDPAddr{IP: net.ParseIP(host), Port: 32761}
 	}
 

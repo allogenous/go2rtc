@@ -90,10 +90,10 @@ func (c *Client) Dial() (err error) {
 }
 
 func (c *Client) Open() (err error) {
-	// Hikvision ISAPI may not accept a new open request if the previous one was not closed (e.g.
+	// Hikvision ISAPI may not accept a new open request if the previous one was not closed (e.g
 	// using the test button on-camera or via curl command) but a close request can be sent even if
 	// the audio is already closed. So, we send a close request first and then open it again. Seems
-	// janky but it works.
+	// janky but it works
 	if err = c.Close(); err != nil {
 		return err
 	}

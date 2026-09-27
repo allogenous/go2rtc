@@ -211,7 +211,7 @@ var basePath string
 var embedMux *http.ServeMux
 var log zerolog.Logger
 
-// SetEmbedMux 嵌入宿主进程时注入 ServeMux；须在 Init 之前调用。
+// SetEmbedMux 嵌入宿主进程时注入 ServeMux；须在 Init 之前调用
 func SetEmbedMux(mux *http.ServeMux) {
 	embedMux = mux
 }

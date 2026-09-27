@@ -36,49 +36,49 @@ func newH265NALUHeader(highByte, lowByte uint8) H265NALUHeader {
 	return H265NALUHeader((uint16(highByte) << 8) | uint16(lowByte))
 }
 
-// F is the forbidden bit, should always be 0.
+// F is the forbidden bit, should always be 0
 func (h H265NALUHeader) F() bool {
 	return (uint16(h) >> 15) != 0
 }
 
-// Type of NAL Unit.
+// Type of NAL Unit
 func (h H265NALUHeader) Type() uint8 {
 	// 01111110 00000000
 	const mask = 0b01111110 << 8
 	return uint8((uint16(h) & mask) >> (8 + 1))
 }
 
-// IsTypeVCLUnit returns whether or not the NAL Unit type is a VCL NAL unit.
+// IsTypeVCLUnit returns whether or not the NAL Unit type is a VCL NAL unit
 func (h H265NALUHeader) IsTypeVCLUnit() bool {
 	// Type is coded on 6 bits
 	const msbMask = 0b00100000
 	return (h.Type() & msbMask) == 0
 }
 
-// LayerID should always be 0 in non-3D HEVC context.
+// LayerID should always be 0 in non-3D HEVC context
 func (h H265NALUHeader) LayerID() uint8 {
 	// 00000001 11111000
 	const mask = (0b00000001 << 8) | 0b11111000
 	return uint8((uint16(h) & mask) >> 3)
 }
 
-// TID is the temporal identifier of the NAL unit +1.
+// TID is the temporal identifier of the NAL unit +1
 func (h H265NALUHeader) TID() uint8 {
 	const mask = 0b00000111
 	return uint8(uint16(h) & mask)
 }
 
-// IsAggregationPacket returns whether or not the packet is an Aggregation packet.
+// IsAggregationPacket returns whether or not the packet is an Aggregation packet
 func (h H265NALUHeader) IsAggregationPacket() bool {
 	return h.Type() == h265NaluAggregationPacketType
 }
 
-// IsFragmentationUnit returns whether or not the packet is a Fragmentation Unit packet.
+// IsFragmentationUnit returns whether or not the packet is a Fragmentation Unit packet
 func (h H265NALUHeader) IsFragmentationUnit() bool {
 	return h.Type() == h265NaluFragmentationUnitType
 }
 
-// IsPACIPacket returns whether or not the packet is a PACI packet.
+// IsPACIPacket returns whether or not the packet is a PACI packet
 func (h H265NALUHeader) IsPACIPacket() bool {
 	return h.Type() == h265NaluPACIPacketType
 }
@@ -100,19 +100,19 @@ const (
 // +---------------+
 type H265FragmentationUnitHeader uint8
 
-// S represents the start of a fragmented NAL unit.
+// S represents the start of a fragmented NAL unit
 func (h H265FragmentationUnitHeader) S() bool {
 	const mask = 0b10000000
 	return ((h & mask) >> 7) != 0
 }
 
-// E represents the end of a fragmented NAL unit.
+// E represents the end of a fragmented NAL unit
 func (h H265FragmentationUnitHeader) E() bool {
 	const mask = 0b01000000
 	return ((h & mask) >> 6) != 0
 }
 
-// FuType MUST be equal to the field Type of the fragmented NAL unit.
+// FuType MUST be equal to the field Type of the fragmented NAL unit
 func (h H265FragmentationUnitHeader) FuType() uint8 {
 	const mask = 0b00111111
 	return uint8(h) & mask
@@ -225,7 +225,7 @@ func (p *Payloader) Payload(mtu uint16, payload []byte) [][]byte {
 			bufferedNALUs = append(bufferedNALUs, nalu)
 			aggregationBufferSize += marginalAggregationSize
 			if p.SkipAggregation {
-				// emit this immediately.
+				// emit this immediately
 				flushBufferedNals()
 			}
 		} else {
@@ -247,7 +247,7 @@ func (p *Payloader) Payload(mtu uint16, payload []byte) [][]byte {
 				return
 			}
 
-			// flush any buffered aggregation packets.
+			// flush any buffered aggregation packets
 			flushBufferedNals()
 
 			fullNALUSize := len(nalu)

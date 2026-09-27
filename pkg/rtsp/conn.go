@@ -189,7 +189,7 @@ func (c *Conn) handleTCPData() error {
 	// we can read:
 	// 1. RTP interleaved: `$` + 1B channel number + 2B size
 	// 2. RTSP response:   RTSP/1.0 200 OK
-	// 3. RTSP request:    OPTIONS ...
+	// 3. RTSP request:    OPTIONS
 	var buf4 []byte // `$` + 1B channel number + 2B size
 	var err error
 

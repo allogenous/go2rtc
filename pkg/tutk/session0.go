@@ -32,8 +32,8 @@ func (c *Conn) connectRemote(uid string, sid []byte) error {
 		return err
 	}
 
-	// Read real IP from cloud server response.
-	// Important ot use net.IPv4 because slice will be 16 bytes.
+	// Read real IP from cloud server response
+	// Important ot use net.IPv4 because slice will be 16 bytes
 	c.addr.IP = net.IPv4(res[40], res[41], res[42], res[43])
 	c.addr.Port = int(binary.BigEndian.Uint16(res[38:]))
 

@@ -89,7 +89,7 @@ func offerToB64(sdp string) (io.Reader, error) {
 		return nil, err
 	}
 
-	// base64, why? who knows...
+	// base64, why? who knows
 	s := base64.StdEncoding.EncodeToString(b)
 
 	return strings.NewReader(s), nil

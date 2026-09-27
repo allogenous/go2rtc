@@ -74,9 +74,9 @@ func NewStream(
 	return stream, nil
 }
 
-// GetFreeStream search free streaming service.
-// Usual every HomeKit camera can stream only to two clients simultaniosly.
-// So it has two similar services for streaming.
+// GetFreeStream search free streaming service
+// Usual every HomeKit camera can stream only to two clients simultaniosly
+// So it has two similar services for streaming
 func (s *Stream) GetFreeStream() error {
 	acc, err := s.client.GetFirstAccessory()
 	if err != nil {

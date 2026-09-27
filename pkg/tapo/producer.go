@@ -9,7 +9,7 @@ import (
 
 func (c *Client) GetMedias() []*core.Media {
 	if c.medias == nil {
-		// don't know if all Tapo has this capabilities...
+		// don't know if all Tapo has this capabilities
 		c.medias = []*core.Media{
 			{
 				Kind:      core.KindVideo,

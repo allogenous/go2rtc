@@ -164,11 +164,11 @@ func NewServerAPI(network, address string, filters *Filters) (*webrtc.API, error
 		_ = s.SetEphemeralUDPPortRange(filters.UDPPorts[0], filters.UDPPorts[1])
 	}
 
-	// If you don't specify an address, this won't cause an error.
-	// Connections can still be established using random UDP addresses.
+	// If you don't specify an address, this won't cause an error
+	// Connections can still be established using random UDP addresses
 	if address != "" {
 		// Both newMux functions respect filters and do not raise an error
-		// if the port cannot be listened on.
+		// if the port cannot be listened on
 		if network == "" || network == "tcp" {
 			tcpMux := newTCPMux(address, filters)
 			s.SetICETCPMux(tcpMux)
@@ -204,8 +204,8 @@ func newUDPMux(address string, filters *Filters) ice.UDPMux {
 		return nil
 	}
 
-	// UDPMux should not listening on unspecified address.
-	// So we will create a listener on all available interfaces.
+	// UDPMux should not listening on unspecified address
+	// So we will create a listener on all available interfaces
 	// We can't use ice.NewMultiUDPMuxFromPort, because it sometimes crashes with an error:
 	//     listen udp [***]:8555: bind: cannot assign requested address
 	var addrs []string

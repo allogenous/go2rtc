@@ -165,9 +165,9 @@ func (c *TuyaMqttClient) Stop() {
 	c.closed = true
 }
 
-// WakeUp sends a wake-up signal to battery-powered cameras (LowPower mode).
-// The camera wakes up and starts responding immediately - we don't wait for dps[149].
-// Note: LowPower cameras sleep after ~3 minutes of inactivity.
+// WakeUp sends a wake-up signal to battery-powered cameras (LowPower mode)
+// The camera wakes up and starts responding immediately - we don't wait for dps[149]
+// Note: LowPower cameras sleep after ~3 minutes of inactivity
 func (c *TuyaMqttClient) WakeUp(localKey string) error {
 	// Calculate CRC32 of localKey as wake-up payload
 	crc := crc32.ChecksumIEEE([]byte(localKey))
@@ -316,11 +316,11 @@ func (c *TuyaMqttClient) onLowPowerMessage(client mqtt.Client, msg mqtt.Message)
 	if message.Protocol == 4 {
 		if val, ok := message.Data.Dps["149"]; ok {
 			if ready, ok := val.(bool); ok && ready {
-				// Camera is now ready after wake-up (dps[149]:true received).
-				// However, we don't wait for this signal (like ismartlife.me doesn't either).
+				// Camera is now ready after wake-up (dps[149]:true received)
+				// However, we don't wait for this signal (like ismartlife.me doesn't either)
 				// The camera starts responding immediately after WakeUp() is called,
-				// so we proceed with the connection without blocking.
-				// This waiter is kept for potential future use.
+				// so we proceed with the connection without blocking
+				// This waiter is kept for potential future use
 				c.wakeupWaiter.Done(nil)
 			}
 		}

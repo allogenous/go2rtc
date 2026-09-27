@@ -229,7 +229,7 @@ func DecodeVideo(data, key []byte) ([]byte, error) {
 	}
 
 	if data[8] != 1 {
-		// Support could be added, but I haven't seen such cameras.
+		// Support could be added, but I haven't seen such cameras
 		return nil, fmt.Errorf("xiaomi: unsupported encryption")
 	}
 

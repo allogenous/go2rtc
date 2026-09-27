@@ -134,8 +134,8 @@ func (c *Conn) worker() {
 			channel := c.channels[ch]
 
 			if c.isTCP {
-				// For TCP we should send ping every second to keep connection alive.
-				// Based on PCAP analysis: official Mi Home app sends PING every ~1s.
+				// For TCP we should send ping every second to keep connection alive
+				// Based on PCAP analysis: official Mi Home app sends PING every ~1s
 				if now := time.Now(); now.After(keepaliveTS) {
 					_, _ = c.Conn.Write([]byte{magic, msgPing, 0, 0})
 					keepaliveTS = now.Add(time.Second)
@@ -150,7 +150,7 @@ func (c *Conn) worker() {
 				pushed, err = channel.PushSeq(seq, buf[8:n])
 
 				if pushed >= 0 {
-					// For UDP we should send ACK.
+					// For UDP we should send ACK
 					ack := []byte{magic, msgDrwAck, 0, 6, magicDrw, ch, 0, 1, seqHI, seqLO}
 					_, _ = c.Conn.Write(ack)
 				}
@@ -298,7 +298,7 @@ func marshalCmd(channel byte, seq uint16, cmd uint32, payload []byte) []byte {
 }
 
 func newUDPConn(host string, port int) (net.Conn, error) {
-	// We using raw net.UDPConn, because RemoteAddr should be changed during handshake.
+	// We using raw net.UDPConn, because RemoteAddr should be changed during handshake
 	conn, err := net.ListenUDP("udp", nil)
 	if err != nil {
 		return nil, err
@@ -433,7 +433,7 @@ func (c *dataChannel) Push(b []byte) error {
 	c.waitData = append(c.waitData, b...)
 
 	for len(c.waitData) > 4 {
-		// Every new data starts with size. There can be several data inside one packet.
+		// Every new data starts with size. There can be several data inside one packet
 		if c.waitSize == 0 {
 			c.waitSize = int(binary.BigEndian.Uint32(c.waitData))
 			c.waitData = c.waitData[4:]
@@ -463,20 +463,20 @@ func (c *dataChannel) Close() {
 	close(c.popBuf)
 }
 
-// PushSeq returns how many seq were processed.
-// Returns 0 if seq was saved or processed earlier.
-// Returns -1 if seq could not be saved (buffer full or disabled).
+// PushSeq returns how many seq were processed
+// Returns 0 if seq was saved or processed earlier
+// Returns -1 if seq could not be saved (buffer full or disabled)
 func (c *dataChannel) PushSeq(seq uint16, data []byte) (int, error) {
 	diff := int16(seq - c.waitSeq)
-	// Check if this is seq from the future.
+	// Check if this is seq from the future
 	if diff > 0 {
-		// Support disabled buffer.
+		// Support disabled buffer
 		if c.pushSize == 0 {
 			return -1, nil // couldn't save seq
 		}
-		// Check if we don't have this seq in the buffer.
+		// Check if we don't have this seq in the buffer
 		if c.pushBuf[seq] == nil {
-			// Check if there is enough space in the buffer.
+			// Check if there is enough space in the buffer
 			if len(c.pushBuf) == c.pushSize {
 				return -1, nil // couldn't save seq
 			}
@@ -486,7 +486,7 @@ func (c *dataChannel) PushSeq(seq uint16, data []byte) (int, error) {
 		return 0, nil
 	}
 
-	// Check if this is seq from the past.
+	// Check if this is seq from the past
 	if diff < 0 {
 		return 0, nil
 	}
@@ -496,7 +496,7 @@ func (c *dataChannel) PushSeq(seq uint16, data []byte) (int, error) {
 			return i, err
 		}
 		c.waitSeq++
-		// Check if we have next seq in the buffer.
+		// Check if we have next seq in the buffer
 		if data = c.pushBuf[c.waitSeq]; data != nil {
 			delete(c.pushBuf, c.waitSeq)
 		} else {

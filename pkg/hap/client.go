@@ -27,7 +27,7 @@ const (
 	ConnDeadline    = time.Second * 3
 )
 
-// Client for HomeKit. DevicePublic can be null.
+// Client for HomeKit. DevicePublic can be null
 type Client struct {
 	DeviceAddress string // including port
 	DeviceID      string // aka. Accessory

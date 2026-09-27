@@ -166,9 +166,9 @@ func (s *Session25) handleChunk(cmd []byte, checkSeq bool) int {
 		}
 	}
 
-	// Check if this is first chunk for frame.
+	// Check if this is first chunk for frame
 	// Handle protocol bug "0x20 chunk seq for last chunk" and sometimes
-	// "0x20 chunk seq for first chunk if only one chunk".
+	// "0x20 chunk seq for first chunk if only one chunk"
 	if binary.LittleEndian.Uint16(cmd2[6:]) == 0 || binary.LittleEndian.Uint16(cmd2[4:]) == 1 {
 		s.waitData = s.waitData[:0]
 		s.waitCSeq = seq
@@ -288,7 +288,7 @@ func (s *Session25) msgAck0A08(msg28 []byte) []byte {
 	return msg
 }
 
-// ReorderBuffer used for UDP incoming data. Because the order of the packets may be mixed up.
+// ReorderBuffer used for UDP incoming data. Because the order of the packets may be mixed up
 type ReorderBuffer struct {
 	buf  map[uint16][]byte
 	seq  uint16
@@ -299,7 +299,7 @@ func NewReorderBuffer(size int) *ReorderBuffer {
 	return &ReorderBuffer{buf: make(map[uint16][]byte), size: size}
 }
 
-// Check return OK if this is the seq we are waiting for.
+// Check return OK if this is the seq we are waiting for
 func (r *ReorderBuffer) Check(seq uint16) (ok bool) {
 	return seq == r.seq
 }
@@ -308,18 +308,18 @@ func (r *ReorderBuffer) Next() {
 	r.seq++
 }
 
-// Available return how much free slots is in the buffer.
+// Available return how much free slots is in the buffer
 func (r *ReorderBuffer) Available() int {
 	return r.size - len(r.buf)
 }
 
-// Push new item to buffer. Important! There is no buffer full check here.
+// Push new item to buffer. Important! There is no buffer full check here
 func (r *ReorderBuffer) Push(seq uint16, data []byte) {
 	//log.Printf("push seq=%d wait=%d", seq, r.seq)
 	r.buf[seq] = bytes.Clone(data)
 }
 
-// Pop latest item from buffer. OK - if items wasn't dropped.
+// Pop latest item from buffer. OK - if items wasn't dropped
 func (r *ReorderBuffer) Pop() []byte {
 	for {
 		if data := r.buf[r.seq]; data != nil {

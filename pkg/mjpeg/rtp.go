@@ -43,7 +43,7 @@ func RTPDepay(handlerFunc core.HandlerFunc) core.HandlerFunc {
 			}
 
 			// https://www.rfc-editor.org/rfc/rfc2435#section-3.1.5
-			// The maximum width is 2040 pixels.
+			// The maximum width is 2040 pixels
 			w := uint16(packet.Payload[6]) << 3
 			h := uint16(packet.Payload[7]) << 3
 

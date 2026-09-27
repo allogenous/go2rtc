@@ -62,7 +62,7 @@ func DecodeSPS(nalu []byte) *SPS {
 	s.pic_width_in_luma_samples = r.ReadUEGolomb()
 	s.pic_height_in_luma_samples = r.ReadUEGolomb()
 
-	//...
+	//
 
 	if r.EOF {
 		return nil
@@ -72,7 +72,7 @@ func DecodeSPS(nalu []byte) *SPS {
 }
 
 // profile_tier_level supports ONLY general_profile_idc == 1
-// over variants very complicated...
+// over variants very complicated
 //
 //goland:noinspection GoSnakeCaseUsage
 func (s *SPS) profile_tier_level(r *bits.Reader) bool {

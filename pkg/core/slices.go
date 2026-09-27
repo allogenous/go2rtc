@@ -1,10 +1,10 @@
 package core
 
-// This code copied from go1.21 for backward support in go1.20.
+// This code copied from go1.21 for backward support in go1.20
 // We need to support go1.20 for Windows 7
 
 // Index returns the index of the first occurrence of v in s,
-// or -1 if not present.
+// or -1 if not present
 func Index[S ~[]E, E comparable](s S, v E) int {
 	for i := range s {
 		if v == s[i] {
@@ -14,7 +14,7 @@ func Index[S ~[]E, E comparable](s S, v E) int {
 	return -1
 }
 
-// Contains reports whether v is present in s.
+// Contains reports whether v is present in s
 func Contains[S ~[]E, E comparable](s S, v E) bool {
 	return Index(s, v) >= 0
 }
@@ -26,9 +26,9 @@ type Ordered interface {
 		~string
 }
 
-// Max returns the maximal value in x. It panics if x is empty.
+// Max returns the maximal value in x. It panics if x is empty
 // For floating-point E, Max propagates NaNs (any NaN value in x
-// forces the output to be NaN).
+// forces the output to be NaN)
 func Max[S ~[]E, E Ordered](x S) E {
 	if len(x) < 1 {
 		panic("slices.Max: empty list")

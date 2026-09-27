@@ -31,7 +31,7 @@ func GetLogger(module string) zerolog.Logger {
 // - output: empty (only to memory), stderr, stdout
 // - format: empty (autodetect color support), color, json, text
 // - time:   empty (disable timestamp), UNIXMS, UNIXMICRO, UNIXNANO
-// - level:  disabled, trace, debug, info, warn, error...
+// - level:  disabled, trace, debug, info, warn, error
 func initLogger() {
 	var cfg struct {
 		Mod map[string]string `yaml:"log"`

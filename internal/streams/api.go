@@ -22,7 +22,7 @@ func apiStreams(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Not sure about all this API. Should be rewrited...
+	// Not sure about all this API. Should be rewrited
 	switch r.Method {
 	case "GET":
 		stream := Get(src)

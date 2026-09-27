@@ -90,7 +90,7 @@ func (c *Conn) Accept() error {
 				return err
 			}
 
-			// TODO: fix someday...
+			// TODO: fix someday
 			for i, media := range c.Medias {
 				track := core.NewReceiver(media, media.Codecs[0])
 				track.ID = byte(i * 2)

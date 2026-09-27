@@ -45,7 +45,7 @@ func CreateCertificate() (*tls.Certificate, error) {
 	}
 
 	// 3. Create a self-signed certificate
-	// The parent is the template itself, and we use the generated public and private keys.
+	// The parent is the template itself, and we use the generated public and private keys
 	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &privateKey.PublicKey, privateKey)
 	if err != nil {
 		return nil, err

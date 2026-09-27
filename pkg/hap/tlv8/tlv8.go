@@ -55,8 +55,8 @@ func Marshal(v any) ([]byte, error) {
 	return nil, errors.New("tlv8: not implemented: " + kind.String())
 }
 
-// separator the most confusing meaning in the documentation.
-// It can have a value of 0x00 or 0xFF or even 0x05.
+// separator the most confusing meaning in the documentation
+// It can have a value of 0x00 or 0xFF or even 0x05
 const separator = 0xFF
 
 func appendSlice(b []byte, value reflect.Value) ([]byte, error) {

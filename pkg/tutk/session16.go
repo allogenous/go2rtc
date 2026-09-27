@@ -263,7 +263,7 @@ func (s *Session16) SessionRead(chID byte, cmd []byte) int {
 }
 
 func (s *Session16) msgAck0070(msg28 []byte) []byte {
-	// <- 00700800010000000000000000000000340000007625a02f ...
+	// <- 00700800010000000000000000000000340000007625a02f
 	// -> 00710800010000000000000000000000000000007625a02f
 	msg := s.Msg(msgHhrSize + cmdHdrSize)
 
@@ -324,7 +324,7 @@ func (s *Session16) msgAck0000(msg28 []byte) []byte {
 	cmd[16] = cmdDataSize
 	copy(cmd[20:], msg28[20:24]) // request id (random)
 
-	// Important to answer with same data.
+	// Important to answer with same data
 	data := cmd[cmdHdrSize:]
 	copy(data, msg28[len(msg28)-32:])
 	return msg

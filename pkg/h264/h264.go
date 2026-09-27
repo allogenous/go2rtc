@@ -60,8 +60,8 @@ const (
 )
 
 // GetProfileLevelID - get profile from fmtp line
-// Some devices won't play video with high level, so limit max profile and max level.
-// And return some profile even if fmtp line is empty.
+// Some devices won't play video with high level, so limit max profile and max level
+// And return some profile even if fmtp line is empty
 func GetProfileLevelID(fmtp string) string {
 	// avc1.640029 - H.264 high 4.1 (Chromecast 1st and 2nd Gen)
 	profile := byte(ProfileHigh)

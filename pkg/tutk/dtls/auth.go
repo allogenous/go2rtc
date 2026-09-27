@@ -19,7 +19,7 @@ func CalculateAuthKey(enr, mac string) []byte {
 func DerivePSK(enr string) []byte {
 	// DerivePSK derives the DTLS PSK from ENR
 	// TUTK SDK treats the PSK as a NULL-terminated C string, so if SHA256(ENR)
-	// contains a 0x00 byte, the PSK is truncated at that position.
+	// contains a 0x00 byte, the PSK is truncated at that position
 	hash := sha256.Sum256([]byte(enr))
 	pskLen := 32
 	for i := range 32 {

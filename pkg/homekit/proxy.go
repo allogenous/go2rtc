@@ -166,7 +166,7 @@ func (p *Proxy) handleAcc() error {
 }
 
 func (p *Proxy) listenHDS(srv ServerProxy, accPort int, salt string) (int, error) {
-	// The TCP port range for HDS must be >= 32768.
+	// The TCP port range for HDS must be >= 32768
 	ln, err := net.ListenTCP("tcp", nil)
 	if err != nil {
 		return 0, err

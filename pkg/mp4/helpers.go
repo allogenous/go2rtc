@@ -104,10 +104,10 @@ func ParseCodecs(codecs string, parseAudio bool) (medias []*core.Media) {
 	return
 }
 
-// PatchVideoRotate - update video track transformation matrix.
-// Rotation supported by many players and browsers (except Safari).
-// Scale has low support and better not to use it.
-// Supported only 0, 90, 180, 270 degrees.
+// PatchVideoRotate - update video track transformation matrix
+// Rotation supported by many players and browsers (except Safari)
+// Scale has low support and better not to use it
+// Supported only 0, 90, 180, 270 degrees
 func PatchVideoRotate(init []byte, degrees int) bool {
 	// search video atom
 	i := bytes.Index(init, []byte("vide"))
@@ -149,9 +149,9 @@ func PatchVideoRotate(init []byte, degrees int) bool {
 	return true
 }
 
-// PatchVideoScale - update "Pixel Aspect Ratio" atom.
-// Supported by many players and browsers (except Firefox).
-// Supported only positive integers.
+// PatchVideoScale - update "Pixel Aspect Ratio" atom
+// Supported by many players and browsers (except Firefox)
+// Supported only positive integers
 func PatchVideoScale(init []byte, scaleX, scaleY int) bool {
 	// search video atom
 	i := bytes.Index(init, []byte("pasp"))

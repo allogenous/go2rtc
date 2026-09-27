@@ -356,7 +356,7 @@ func (c *Conn) SetupMedia(media *core.Media) (byte, error) {
 
 				go func() {
 					// Try to open a hole in the NAT router (to allow incoming UDP packets)
-					// by send a UDP packet for RTP and RTCP to the remote RTSP server.
+					// by send a UDP packet for RTP and RTCP to the remote RTSP server
 					// https://github.com/FFmpeg/FFmpeg/blob/aa91ae25b88e195e6af4248e0ab30605735ca1cd/libavformat/rtpdec.c#L416-L438
 					_, _ = c.WriteToUDP([]byte{0x80, 0x00, 0x00, 0x00}, channel)
 					_, _ = c.WriteToUDP([]byte{0x80, 0xC8, 0x00, 0x01}, channel+1)

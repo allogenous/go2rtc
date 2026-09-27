@@ -75,7 +75,7 @@ func (s *server) Handle(w http.ResponseWriter, r *http.Request) {
 
 	defer conn.Close()
 
-	// Fix reading from Body after Hijack.
+	// Fix reading from Body after Hijack
 	r.Body = io.NopCloser(rw)
 
 	switch r.RequestURI {
@@ -120,7 +120,7 @@ func (s *server) Handle(w http.ResponseWriter, r *http.Request) {
 			handler = homekit.ProxyHandler(s, client.Conn)
 		}
 
-		// If your iPhone goes to sleep, it will be an EOF error.
+		// If your iPhone goes to sleep, it will be an EOF error
 		if err = handler(controller); err != nil && !errors.Is(err, io.EOF) {
 			log.Error().Err(err).Caller().Send()
 			return

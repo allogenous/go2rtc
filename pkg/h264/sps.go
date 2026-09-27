@@ -211,7 +211,7 @@ func DecodeSPS(sps []byte) *SPS {
 			s.time_scale = r.ReadUint32()
 			s.fixed_frame_rate_flag = r.ReadBit()
 		}
-		//...
+		//
 	}
 
 	if r.EOF {

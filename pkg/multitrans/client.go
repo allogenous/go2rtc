@@ -180,7 +180,7 @@ func (c *Client) openTalkChannel(uri, session string) error {
 		return errors.New("multitrans: talkback failed: " + res.Status)
 	}
 
-	// Python checks for "error_code":0 in body.
+	// Python checks for "error_code":0 in body
 	if !bytes.Contains(res.Body, []byte(`"error_code":0`)) {
 		return fmt.Errorf("multitrans: talkback error: %s", string(res.Body))
 	}

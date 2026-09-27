@@ -42,7 +42,7 @@ func NewClient(rawURL string) (*Client, error) {
 		return nil, err
 	}
 
-	// 1. Check if we can create shared key.
+	// 1. Check if we can create shared key
 	query := u.Query()
 	key, err := crypto.CalcSharedKey(query.Get("device_public"), query.Get("client_private"))
 	if err != nil {
@@ -51,7 +51,7 @@ func NewClient(rawURL string) (*Client, error) {
 
 	model := query.Get("model")
 
-	// 2. Check if this vendor supported.
+	// 2. Check if this vendor supported
 	var conn Conn
 	switch s := query.Get("vendor"); s {
 	case "cs2":
@@ -139,8 +139,8 @@ const (
 	ModelLoockV2 = "loock.cateye.v02"
 	ModelC200    = "chuangmi.camera.046c04"
 	ModelC300    = "chuangmi.camera.72ac1"
-	// ModelXiaofang looks like it has the same firmware as the ModelDafang.
-	// There is also an older model "isa.camera.isc5" that only works with the legacy protocol.
+	// ModelXiaofang looks like it has the same firmware as the ModelDafang
+	// There is also an older model "isa.camera.isc5" that only works with the legacy protocol
 	ModelXiaofang = "isa.camera.isc5c1"
 )
 
@@ -164,9 +164,9 @@ func (c *Client) StartMedia(channel, quality, audio string) error {
 	// 0 - auto, 1 - sd, 2 - hd, default - hd
 	switch quality {
 	case "", "hd":
-		// Some models have broken codec settings in quality 3.
-		// Some models have low quality in quality 2.
-		// Different models require different default quality settings.
+		// Some models have broken codec settings in quality 3
+		// Some models have low quality in quality 2
+		// Different models require different default quality settings
 		switch c.model {
 		case ModelC200, ModelC300:
 			quality = "3"
@@ -208,7 +208,7 @@ func (c *Client) StartSpeaker() error {
 	return c.WriteCommand(data)
 }
 
-// SpeakerCodec if the camera model has a non-standard two-way codec.
+// SpeakerCodec if the camera model has a non-standard two-way codec
 func (c *Client) SpeakerCodec() uint32 {
 	switch c.model {
 	case ModelDafang, ModelXiaofang, "isa.camera.hlc6":

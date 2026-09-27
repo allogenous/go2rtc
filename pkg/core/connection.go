@@ -35,8 +35,8 @@ type Info interface {
 // - Transport used for auto closing on Stop
 type Connection struct {
 	ID         uint32 `json:"id,omitempty"`
-	FormatName string `json:"format_name,omitempty"` // rtsp, webrtc, mp4, mjpeg, mpjpeg...
-	Protocol   string `json:"protocol,omitempty"`    // tcp, udp, http, ws, pipe...
+	FormatName string `json:"format_name,omitempty"` // rtsp, webrtc, mp4, mjpeg, mpjpeg.
+	Protocol   string `json:"protocol,omitempty"`    // tcp, udp, http, ws, pipe.
 	RemoteAddr string `json:"remote_addr,omitempty"` // host:port other info
 	Source     string `json:"source,omitempty"`
 	URL        string `json:"url,omitempty"`

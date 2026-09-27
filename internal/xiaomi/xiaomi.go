@@ -93,14 +93,14 @@ func cloudUserRequest(user *url.Userinfo, apiURL, params string) ([]byte, error)
 func getCameraURL(url *url.URL) (string, error) {
 	model := url.Query().Get("model")
 
-	// It is not known which models need to be awakened.
-	// Probably all the doorbells and all the battery cameras.
+	// It is not known which models need to be awakened
+	// Probably all the doorbells and all the battery cameras
 	if strings.Contains(model, ".cateye.") {
 		_ = wakeUpCamera(url)
 	}
 
-	// The getMissURL request has a fallback to getP2PURL.
-	// But for known models we can save one request to the cloud.
+	// The getMissURL request has a fallback to getP2PURL
+	// But for known models we can save one request to the cloud
 	if xiaomi.IsLegacy(model) {
 		return getLegacyURL(url)
 	}

@@ -47,7 +47,7 @@ type Client struct {
 	send int
 }
 
-// block ciphers using cipher block chaining.
+// block ciphers using cipher block chaining
 type cbcMode interface {
 	cipher.BlockMode
 	SetIV([]byte)
@@ -231,11 +231,11 @@ func (c *Client) Handle() error {
 
 			if pkt.PayloadType == mpegts.StreamTypePCMUTapo {
 				// TODO: rewrite this part in the future
-				// Some cameras in the new firmware began to use PCMU/16000.
+				// Some cameras in the new firmware began to use PCMU/16000
 				// https://github.com/AlexxIT/go2rtc/issues/1954
-				// I don't know why Tapo considers this an improvement. The codec is no better than the previous one.
-				// Unfortunately, we don't know in advance what codec the camera will use.
-				// Therefore, it's easier to transcode to a standard codec that all Tapo cameras have.
+				// I don't know why Tapo considers this an improvement. The codec is no better than the previous one
+				// Unfortunately, we don't know in advance what codec the camera will use
+				// Therefore, it's easier to transcode to a standard codec that all Tapo cameras have
 				if transcode == nil {
 					transcode = pcm.Transcode(
 						&core.Codec{Name: core.CodecPCMA, ClockRate: 8000},

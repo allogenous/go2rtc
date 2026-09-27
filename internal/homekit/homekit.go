@@ -158,9 +158,9 @@ func resolve(host string) *server {
 }
 
 func hapHandler(w http.ResponseWriter, r *http.Request) {
-	// Can support multiple HomeKit cameras on single port ONLY for Apple devices.
+	// Can support multiple HomeKit cameras on single port ONLY for Apple devices
 	// Doesn't support Home Assistant and any other open source projects
-	// because they don't send the host header in requests.
+	// because they don't send the host header in requests
 	srv := resolve(r.Host)
 	if srv == nil {
 		log.Error().Msg("[homekit] unknown host: " + r.Host)

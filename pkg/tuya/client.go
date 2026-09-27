@@ -363,8 +363,8 @@ func (c *Client) AddTrack(media *core.Media, codec *core.Codec, track *core.Rece
 		// Frame size affects audio delay with Tuya cameras:
 		// Browser sends standard 20ms frames (160 bytes for G.711), but this causes
 		// up to 4s delay on some Tuya cameras. Increasing to 240 bytes (30ms) reduces
-		// delay to ~2s. Higher values (320+ bytes) don't work and cause issues.
-		// Using 240 bytes (30ms) as optimal balance between latency and stability.
+		// delay to ~2s. Higher values (320+ bytes) don't work and cause issues
+		// Using 240 bytes (30ms) as optimal balance between latency and stability
 		frameSize := 240
 
 		var buf []byte

@@ -137,7 +137,7 @@ func (p *Payloader) Payload(mtu uint16, payload []byte) [][]byte {
 		// fragmented NAL unit is conveyed in the F and NRI fields of the FU
 		// indicator octet of the fragmentation unit and in the type field of
 		// the FU header.  An FU payload MAY have any number of octets and MAY
-		// be empty.
+		// be empty
 
 		naluData := nalu
 		// According to the RFC, the first octet is skipped due to redundant information

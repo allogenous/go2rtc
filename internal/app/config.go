@@ -55,7 +55,7 @@ func (c *flagConfig) Set(value string) error {
 
 var configs [][]byte
 
-// AppendConfigYAML 追加嵌入式 YAML 配置（在 Init / InitEmbedded 加载模块前调用）。
+// AppendConfigYAML 追加嵌入式 YAML 配置（在 Init / InitEmbedded 加载模块前调用）
 func AppendConfigYAML(data []byte) {
 	if len(data) == 0 {
 		return
@@ -63,7 +63,7 @@ func AppendConfigYAML(data []byte) {
 	configs = append(configs, data)
 }
 
-// InitEmbedded 供宿主进程库嵌入初始化：不解析命令行 flag，不监听独立 HTTP 端口。
+// InitEmbedded 供宿主进程库嵌入初始化：不解析命令行 flag，不监听独立 HTTP 端口
 func InitEmbedded() {
 	if Version == "" {
 		Version = "1.9.14"

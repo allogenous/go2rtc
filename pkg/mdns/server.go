@@ -102,12 +102,12 @@ func AppendDNSSD(msg *dns.Msg, service string) {
 		msg.Answer,
 		&dns.PTR{
 			Hdr: dns.RR_Header{
-				Name:   ServiceDNSSD,  // _services._dns-sd._udp.local.
+				Name:   ServiceDNSSD,  // _services._dns-sd._udp.local
 				Rrtype: dns.TypePTR,   // 12
 				Class:  dns.ClassINET, // 1
 				Ttl:    4500,
 			},
-			Ptr: service, // _home-assistant._tcp.local.
+			Ptr: service, // _home-assistant._tcp.local
 		},
 	)
 }
@@ -120,19 +120,19 @@ func AppendEntry(msg *dns.Msg, entry *ServiceEntry, service string, ip net.IP) {
 		msg.Answer,
 		&dns.PTR{
 			Hdr: dns.RR_Header{
-				Name:   service,       // _home-assistant._tcp.local.
+				Name:   service,       // _home-assistant._tcp.local
 				Rrtype: dns.TypePTR,   // 12
 				Class:  dns.ClassINET, // 1
 				Ttl:    4500,
 			},
-			Ptr: ptrName, // Home\ Assistant._home-assistant._tcp.local.
+			Ptr: ptrName, // Home\ Assistant._home-assistant._tcp.local
 		},
 	)
 	msg.Extra = append(
 		msg.Extra,
 		&dns.TXT{
 			Hdr: dns.RR_Header{
-				Name:   ptrName,         // Home\ Assistant._home-assistant._tcp.local.
+				Name:   ptrName,         // Home\ Assistant._home-assistant._tcp.local
 				Rrtype: dns.TypeTXT,     // 16
 				Class:  ClassCacheFlush, // 32769
 				Ttl:    4500,
@@ -141,17 +141,17 @@ func AppendEntry(msg *dns.Msg, entry *ServiceEntry, service string, ip net.IP) {
 		},
 		&dns.SRV{
 			Hdr: dns.RR_Header{
-				Name:   ptrName,         // Home\ Assistant._home-assistant._tcp.local.
+				Name:   ptrName,         // Home\ Assistant._home-assistant._tcp.local
 				Rrtype: dns.TypeSRV,     // 33
 				Class:  ClassCacheFlush, // 32769
 				Ttl:    120,
 			},
 			Port:   entry.Port, // 8123
-			Target: srvName,    // 963f1fa82b7142809711cebe7c826322.local.
+			Target: srvName,    // 963f1fa82b7142809711cebe7c826322.local
 		},
 		&dns.A{
 			Hdr: dns.RR_Header{
-				Name:   srvName,         // 963f1fa82b7142809711cebe7c826322.local.
+				Name:   srvName,         // 963f1fa82b7142809711cebe7c826322.local
 				Rrtype: dns.TypeA,       // 1
 				Class:  ClassCacheFlush, // 32769
 				Ttl:    120,

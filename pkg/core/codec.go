@@ -11,8 +11,8 @@ import (
 )
 
 type Codec struct {
-	Name        string // H264, PCMU, PCMA, opus...
-	ClockRate   uint32 // 90000, 8000, 16000...
+	Name        string // H264, PCMU, PCMA, opus.
+	ClockRate   uint32 // 90000, 8000, 16000.
 	Channels    uint8  // 0, 1, 2
 	FmtpLine    string
 	PayloadType uint8

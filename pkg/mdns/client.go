@@ -73,8 +73,8 @@ var MulticastAddr = &net.UDPAddr{
 const sendTimeout = time.Millisecond * 505
 const respTimeout = time.Second * 3
 
-// BasicDiscovery - default golang Multicast UDP listener.
-// Does not work well with multiple interfaces.
+// BasicDiscovery - default golang Multicast UDP listener
+// Does not work well with multiple interfaces
 func BasicDiscovery(service string, onentry func(*ServiceEntry) bool) error {
 	conn, err := net.ListenMulticastUDP("udp4", nil, MulticastAddr)
 	if err != nil {
@@ -95,7 +95,7 @@ func BasicDiscovery(service string, onentry func(*ServiceEntry) bool) error {
 	return b.Browse(onentry)
 }
 
-// Discovery - better discovery version. Works well with multiple interfaces.
+// Discovery - better discovery version. Works well with multiple interfaces
 func Discovery(service string, onentry func(*ServiceEntry) bool) error {
 	b := Browser{
 		Service:     service,
@@ -113,7 +113,7 @@ func Discovery(service string, onentry func(*ServiceEntry) bool) error {
 	return b.Browse(onentry)
 }
 
-// Query - direct Discovery request on device IP-address. Works even over VPN.
+// Query - direct Discovery request on device IP-address. Works even over VPN
 func Query(host, service string) (entry *ServiceEntry, err error) {
 	conn, err := net.ListenPacket("udp4", ":0") // shouldn't use ":5353"
 	if err != nil {
@@ -143,7 +143,7 @@ func Query(host, service string) (entry *ServiceEntry, err error) {
 }
 
 // QueryOrDiscovery - useful if we know previous device host and want
-// to update port or any other information. Will work even over VPN.
+// to update port or any other information. Will work even over VPN
 func QueryOrDiscovery(host, service string, onentry func(*ServiceEntry) bool) error {
 	entry, _ := Query(host, service)
 	if entry != nil && onentry(entry) {
@@ -165,9 +165,9 @@ type Browser struct {
 	SendTimeout time.Duration
 }
 
-// ListenMulticastUDP - creates multiple senders socket (each for IP4 interface).
-// And one receiver with multicast membership for each sender.
-// Receiver will get multicast responses on senders requests.
+// ListenMulticastUDP - creates multiple senders socket (each for IP4 interface)
+// And one receiver with multicast membership for each sender
+// Receiver will get multicast responses on senders requests
 func (b *Browser) ListenMulticastUDP() error {
 	// 1. Collect IPv4 interfaces
 	nets, err := xnet.IPNets(func(ip net.IP) bool {
@@ -318,10 +318,10 @@ func NewServiceEntries(msg *dns.Msg, ip net.IP) (entries []*ServiceEntry) {
 	records = append(records, msg.Ns...)
 	records = append(records, msg.Extra...)
 
-	// PTR ptr=SomeName._hap._tcp.local. hdr=_hap._tcp.local.
-	// TXT txt=...                       hdr=SomeName._hap._tcp.local.
-	// SRV target=SomeName.local.        hdr=SomeName._hap._tcp.local.
-	// A   a=192.168.1.123               hdr=SomeName.local.
+	// PTR ptr=SomeName._hap._tcp.local. hdr=_hap._tcp.local
+	// TXT txt=...                       hdr=SomeName._hap._tcp.local
+	// SRV target=SomeName.local.        hdr=SomeName._hap._tcp.local
+	// A   a=192.168.1.123               hdr=SomeName.local
 
 	for _, record := range records {
 		ptr, ok := record.(*dns.PTR)
